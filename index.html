@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title> Live CC app </title>
+	<style> 
+		* {font-size:50px;}
+		body {background-color:lightgreen;}
+	</style>
+	<script>
+	function convert()
+	{
+		event.preventDefault()
+		let aid = document.getElementById("aid")
+		let ans = document.getElementById("ans")
+		if (aid.value == ""){
+			alert("amount cannot be empty")				
+			ans.innerHTML = ""
+			aid.focus()	
+			return
+		}
+		let urladd = "https://api.exchangerate-api.com/v4/latest/USD"
+		fetch(urladd)
+		.then (res => res.json())
+		.then (data=> {
+			let dollar = data["rates"]["INR"]
+			let d = parseFloat(aid.value)
+			let r = d * dollar
+			msg = "Amount in \u20B9" + r
+			ans.innerHTML = msg
+	
+	})
+		.catch(err => ans.innerHTML = "issue " + err);
+	}
+	</script>
+</head>
+<body>
+<center>
+	<h1> Live Currency Converter </h1>
+	<form onsubmit = convert()>
+		<input type = "number" step = "any" placeholder= "enter money in $$" id = "aid"/>
+		<br><br>
+		<input type = "submit" value = "Convert in Rs"/>
+	</form>
+	<h1 id = "ans"></h1>
+
+</center>
+</body>
+</html>
